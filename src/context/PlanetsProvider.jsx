@@ -5,6 +5,12 @@ import planetsContext from './PlanetsContext';
 function PlanetsProvider({ children }) {
   const [planets, setPlanets] = useState([]);
   const [erro, setError] = useState(null);
+  const [planetName, setPlanetName] = useState('');
+
+  const handleChange = ({ target }) => {
+    const { value } = target;
+    setPlanetName(value);
+  };
 
   const fetchPlanets = async () => {
     try {
@@ -24,7 +30,7 @@ function PlanetsProvider({ children }) {
     fetchPlanets();
   }, []);
 
-  const values = { planets, erro };
+  const values = { planets, erro, planetName, handleChange };
 
   return (
     <planetsContext.Provider value={ values }>
