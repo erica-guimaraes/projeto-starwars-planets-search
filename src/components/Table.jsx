@@ -2,7 +2,8 @@ import React, { useContext } from 'react';
 import PlanetsContext from '../context/PlanetsContext';
 
 function Table() {
-  const { planets, planetName } = useContext(PlanetsContext);
+  const { filteredPlanets, planetName } = useContext(PlanetsContext);
+
   return (
     <table>
       <thead>
@@ -23,7 +24,7 @@ function Table() {
         </tr>
       </thead>
       <tbody>
-        { planets.filter((planet) => planet.name.toUpperCase()
+        { filteredPlanets.filter((planet) => planet.name.toUpperCase()
           .includes(planetName.toUpperCase()))
           .map((planet) => (
             <tr key={ planet.name }>
