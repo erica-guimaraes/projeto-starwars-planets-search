@@ -41,9 +41,8 @@ function PlanetsProvider({ children }) {
     setSelectedFilters({ ...selectedFilters, [name]: value });
   };
 
-  const { column, comparison, value } = selectedFilters;
-
   const handleFilter = () => {
+    const { column, comparison, value } = selectedFilters;
     const filter = filteredPlanets.filter((planet) => {
       if (comparison === 'maior que') {
         return Number(planet[column]) > Number(value);
@@ -60,6 +59,7 @@ function PlanetsProvider({ children }) {
   };
 
   const handleButtonFilter = () => {
+    const { column, comparison, value } = selectedFilters;
     setFiltersPerformed([...filtersPerformed, { column, comparison, value }]);
     handleFilter();
     const options = filterOptions.filter((element) => element !== selectedFilters.column);
@@ -70,9 +70,33 @@ function PlanetsProvider({ children }) {
     });
   };
 
-  console.log(filteredPlanets);
-  console.log(filtersPerformed);
-  console.log(filterOptions);
+  const handleDeleteFilterButton = (updatedFilters) => {
+    setFiltersPerformed(updatedFilters);
+    let filtered = planets;
+
+    updatedFilters.forEach((filter) => {
+      const { column, comparison, value } = filter;
+      filtered = filtered.filter((planet) => {
+        if (comparison === 'maior que') {
+          return Number(planet[column]) > Number(value);
+        }
+        if (comparison === 'menor que') {
+          return Number(planet[column]) < Number(value);
+        }
+        if (comparison === 'igual a') {
+          return Number(planet[column]) === Number(value);
+        }
+        return true;
+      });
+    });
+
+    setFilteredPlanets(filtered);
+  };
+
+  const handleDeleteAllFiltersButton = () => {
+    setFiltersPerformed([]);
+    setFilteredPlanets(planets);
+  };
 
   const values = { planets,
     planetName,
@@ -83,6 +107,8 @@ function PlanetsProvider({ children }) {
     filtersPerformed,
     filterOptions,
     filteredPlanets,
+    handleDeleteFilterButton,
+    handleDeleteAllFiltersButton,
   };
 
   return (

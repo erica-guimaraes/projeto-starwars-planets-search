@@ -7,7 +7,15 @@ function FormFilter() {
     handleChangeFilter,
     handleButtonFilter,
     filterOptions,
-    filtersPerformed } = useContext(PlanetsContext);
+    filtersPerformed,
+    handleDeleteFilterButton,
+    handleDeleteAllFiltersButton } = useContext(PlanetsContext);
+
+  const handleDeleteFilter = (index) => {
+    const updatedFilters = [...filtersPerformed];
+    updatedFilters.splice(index, 1);
+    handleDeleteFilterButton(updatedFilters);
+  };
 
   return (
     <div>
@@ -58,6 +66,13 @@ function FormFilter() {
       >
         FILTRAR
       </button>
+      <button
+        data-testid="button-remove-filters"
+        type="button"
+        onClick={ handleDeleteAllFiltersButton }
+      >
+        REMOVER FILTROS
+      </button>
       <div>
         {filtersPerformed.map((filter, index) => (
           <div
@@ -67,6 +82,12 @@ function FormFilter() {
             <p>{filter.column}</p>
             <p>{filter.comparison}</p>
             <p>{filter.value}</p>
+            <button
+              type="button"
+              onClick={ () => handleDeleteFilter(index) }
+            >
+              x
+            </button>
           </div>
         ))}
       </div>
